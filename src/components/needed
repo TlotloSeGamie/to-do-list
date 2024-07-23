@@ -1,0 +1,68 @@
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    task TEXT NOT NULL,
+    due DATE
+)
+
+INSERT INTO users (task , due)
+VALUES 
+    ("New Account for plot", "2024-09-01")
+
+UPDATE users 
+set due = "2024-09"
+WHERE due = "2024-09-01"
+
+DELETE FROM users
+WHERE task = "New Account for plot"
+
+SELECT * FROM users
+WHERE id ="8"
+
+SELECT task FROM users
+WHERE id = "8"
+
+DROP TABLE users
+
+
+statements.js
+
+const db = require('better-sqlite3')('database.db')
+
+const createTable = () => {
+    const sql = `
+        CREATE TABLE users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            task TEXT NOT NULL,
+            due DATE
+        )
+    `
+    db.prepare(sql).run()
+}
+
+const insertTable = (task, due) => {
+    const sql = `
+        INSERT INTO users (task, due)
+        VALUES (?, ?)
+    `
+    db.prepare(sql).run(task, due)
+}
+
+const getUsers = () => {
+    const sql = `
+        SELECT * FROM users
+    `
+    const rows = db.prepare(sql).all()
+    console.log(rows);
+}
+
+const getUser = (id) => {
+    const sql = `
+        SELECT * FROM users
+        WHERE id = ?
+    `
+    const row = db.prepare(sql).all(id)
+    console.log(row);
+}
+
+getUsers(1)
+
